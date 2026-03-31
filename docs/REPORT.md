@@ -23,24 +23,44 @@ Why:
 - Response: UTF-8 JSON bytes returned by packed pointer/length
 - Exports: `wasm_alloc`, `wasm_free`, `evaluate_feature_flag`
 
-## Measured Results
+## Emulator And Simulator Baseline
 
-Measurements below come from `scripts/bench.sh` on March 31, 2026 on this development machine, using:
+Baseline measurements come from `scripts/bench.sh` on March 31, 2026 on this development machine, using:
 
 - Android emulator: `Pixel_3a_API_34_extension_level_7_arm64-v8a`
 - iOS simulator: `iPhone 16` on iOS 18.0
 
-Concrete results:
+Concrete baseline results:
 
 - wasm artifact size: `121,595` bytes (`118.7 KiB`)
 - Android host native library size: `2,395,160` bytes (`2.29 MiB`)
-- iOS host test-bundle executable size: `1,110,560` bytes (`1.06 MiB`)
-- Android engine init: `16,310.46 µs` (`16.31 ms`)
-- Android cold start through first evaluation: `47,187.50 µs` (`47.19 ms`)
-- Android steady-state mean latency: `921.81 µs`
-- iOS engine init: `20,582.88 µs` (`20.58 ms`)
-- iOS cold start through first evaluation: `56,548.96 µs` (`56.55 ms`)
-- iOS steady-state mean latency: `319.91 µs`
+- iOS host test-bundle executable size: `199,768` bytes (`195.1 KiB`)
+- Android engine init: `19,833.92 µs` (`19.83 ms`)
+- Android cold start through first evaluation: `52,071.29 µs` (`52.07 ms`)
+- Android steady-state mean latency: `885.64 µs`
+- iOS engine init: `1,737.25 µs` (`1.74 ms`)
+- iOS cold start through first evaluation: `18,139.79 µs` (`18.14 ms`)
+- iOS steady-state mean latency: `310.19 µs`
+
+## Physical-Device Measurements
+
+Physical-device measurements are written by `scripts/bench_devices.sh` to:
+
+- `artifacts/metrics/android-device.json`
+- `artifacts/metrics/ios-device.json`
+- `artifacts/metrics/device-summary.json`
+
+Current status on this machine:
+
+- Android phone: not attached
+- iPhone: not attached
+- physical-device numbers: pending first signed hardware run
+
+## Delta Summary
+
+- Until the first hardware run exists, only the emulator/simulator baseline can be compared.
+- `device-summary.json` will record cold-start, steady-state, and engine-init deltas against the baseline files when both sets are present.
+- The hosted iOS project path changes the simulator-side binary being measured, so the next baseline run should refresh the iOS numbers before any hardware comparison is interpreted.
 
 Raw machine-readable outputs live in:
 
@@ -55,6 +75,7 @@ Raw machine-readable outputs live in:
 - Vendoring a runtime is simple for a PoC but increases upgrade and maintenance responsibility.
 - The runtime and host adapter footprint is materially larger than the wasm artifact itself, especially on Android.
 - Emulator and simulator numbers are good enough for a PoC recommendation, but they are not a substitute for measurements on production device classes.
+- The iOS automation path now uses a hosted Xcode project so hardware runs can be signed and exported through `.xcresult` attachments.
 
 ## Runtime Risk
 
@@ -62,7 +83,7 @@ Wasm3 is in a minimal-maintenance phase. That is acceptable for a PoC but not en
 
 ## Recommendation
 
-- proceed only for selected logic classes
+- proceed only for selected logic classes, and confirm the recommendation on physical devices before broadening adoption
 
 Rationale:
 

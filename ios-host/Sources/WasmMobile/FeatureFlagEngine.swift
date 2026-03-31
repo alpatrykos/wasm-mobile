@@ -1,8 +1,14 @@
 import Foundation
+#if SWIFT_PACKAGE
 import WasmHostBridge
+#endif
 
 public final class FeatureFlagEngine {
+    #if SWIFT_PACKAGE
     private var handle: OpaquePointer?
+    #else
+    private var handle: NSNumber?
+    #endif
 
     public var isUsingStub: Bool {
         handle == nil
@@ -13,13 +19,14 @@ public final class FeatureFlagEngine {
         wasmResourceName: String = "shared-core",
         wasmExtension: String = "wasm"
     ) {
-        let resolvedBundle = bundle ?? .module
+        let resolvedBundle = bundle ?? WasmMobileResources.bundle
         guard let url = resolvedBundle.url(forResource: wasmResourceName, withExtension: wasmExtension),
               let wasmData = try? Data(contentsOf: url) else {
             handle = nil
             return
         }
 
+        #if SWIFT_PACKAGE
         var errorPointer: UnsafeMutablePointer<CChar>?
         handle = wasmData.withUnsafeBytes { rawBuffer in
             wm_engine_create(
@@ -29,6 +36,10 @@ public final class FeatureFlagEngine {
             )
         }
         wm_error_free(errorPointer)
+        #else
+        var errorMessage: NSString?
+        handle = WasmHostRuntimeBridge.createEngine(withWasmData: wasmData, errorMessage: &errorMessage)
+        #endif
     }
 
     deinit {
@@ -39,7 +50,11 @@ public final class FeatureFlagEngine {
         guard let handle else {
             return
         }
+        #if SWIFT_PACKAGE
         wm_engine_destroy(handle)
+        #else
+        WasmHostRuntimeBridge.destroyEngine(withHandle: handle)
+        #endif
         self.handle = nil
     }
 
@@ -52,6 +67,7 @@ public final class FeatureFlagEngine {
             return internalError("failed to encode request")
         }
 
+        #if SWIFT_PACKAGE
         var responseLen: UInt32 = 0
         var errorPointer: UnsafeMutablePointer<CChar>?
         let responsePointer = requestData.withUnsafeBytes { rawBuffer in
@@ -77,6 +93,20 @@ public final class FeatureFlagEngine {
         }
 
         let responseData = Data(bytes: responsePointer, count: Int(responseLen))
+        #else
+        var errorMessage: NSString?
+        guard let responseData = WasmHostRuntimeBridge.evaluate(
+            withHandle: handle,
+            request: requestData,
+            errorMessage: &errorMessage
+        ) else {
+            if let errorMessage {
+                return internalError("native runtime failed to evaluate request: \(errorMessage)")
+            }
+            return internalError("native runtime failed to evaluate request")
+        }
+        #endif
+
         do {
             return try FeatureFlagJSON.decoder.decode(FeatureFlagEnvelope.self, from: responseData)
         } catch {

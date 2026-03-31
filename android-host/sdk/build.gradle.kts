@@ -6,6 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.wasmmobile"
+    testNamespace = "com.example.wasmmobile.test"
     compileSdk = 34
     ndkVersion = "28.2.13676358"
 

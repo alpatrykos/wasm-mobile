@@ -60,9 +60,14 @@ Android:
 iOS:
 
 - Swift public API
-- C bridge
+- C bridge compiled into a hosted Xcode project path for simulator and device automation
 - bundled `shared-core.wasm` resource
 - stub fallback if wasm init/load fails
+
+Why the project path exists:
+
+- the original Swift package layout is still useful for shared source organization
+- physical-device XCTest execution needs a signed host app and result bundle handling that is more reliable through an Xcode project than a package-only flow
 
 ## Runtime Choice
 
@@ -71,4 +76,3 @@ Wasm3 is vendored because it has a small interpreter footprint, explicit Android
 ## Fallback Behavior
 
 If a host cannot load the bundled wasm or initialize the runtime, it returns a stub success response using the request's `default_variant` and `source = "stub"`.
-

@@ -6,7 +6,7 @@ Small proof-of-concept for compiling a deterministic slice of mobile SDK logic t
 
 - `shared-core`: Rust feature-flag evaluator with a tiny JSON byte-buffer wasm ABI.
 - `android-host`: Android library module with Kotlin API and JNI/C++ bridge to Wasm3.
-- `ios-host`: Swift package with a Swift API and C bridge to Wasm3.
+- `ios-host`: Swift sources shared between a Swift package path and an Xcode project used for hosted simulator and device tests.
 - `fixtures`: shared golden test vectors consumed by Rust, Android, and iOS tests.
 - `scripts`: plain shell entrypoints for bootstrap, build, sync, test, and benchmark flows.
 
@@ -42,6 +42,7 @@ cargo test --manifest-path shared-core/Cargo.toml
 ./scripts/test_ios.sh
 ./scripts/test_android.sh
 ./scripts/bench.sh
+IOS_DEVELOPMENT_TEAM=YOURTEAMID ./scripts/bench_devices.sh
 ```
 
 ## Wasm Boundary
@@ -59,6 +60,22 @@ Inputs and outputs are UTF-8 JSON byte buffers. The return value from `evaluate_
 - The preferred target is `wasm32v1-none`.
 - If that target is unavailable, the scripts fall back to `wasm32-unknown-unknown` with MVP-oriented codegen flags and print a warning.
 - Both hosts load `artifacts/shared-core.wasm` as a bundled resource and fall back to a stub response if wasm loading fails.
+- iOS simulator and device automation now runs through `ios-host/WasmMobile.xcodeproj`; the Swift package layout remains as the shared source container, not the primary automation entrypoint.
+
+## Device Benchmarking
+
+Physical-device benchmarking uses:
+
+- `ANDROID_SERIAL` or a single attached non-emulator Android device
+- `IOS_DEVICE_ID` or a single attached physical iPhone
+- required `IOS_DEVELOPMENT_TEAM`
+- optional `IOS_CODE_SIGN_IDENTITY`, `IOS_BUNDLE_ID_PREFIX`, and `IOS_CONFIGURATION`
+
+The command writes:
+
+- `artifacts/metrics/android-device.json`
+- `artifacts/metrics/ios-device.json`
+- `artifacts/metrics/device-summary.json`
 
 ## Next Steps
 
@@ -67,4 +84,3 @@ Inputs and outputs are UTF-8 JSON byte buffers. The return value from `evaluate_
 3. Add more rule operators only after validating the minimal host/runtime path.
 4. Measure on physical devices if this moves beyond PoC status.
 5. Decide whether to expand only to deterministic SDK logic or stop after the evaluation report.
-

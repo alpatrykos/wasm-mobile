@@ -45,12 +45,22 @@ final class FeatureFlagEngineTests: XCTestCase {
 }
 
 private func loadFixtures() throws -> [FixtureCase] {
-    let testFileURL = URL(fileURLWithPath: #filePath)
-    let fixtureURL = testFileURL
-        .deletingLastPathComponent()
-        .appendingPathComponent("../../../fixtures/feature_flag_cases.json")
-        .standardizedFileURL
+    let fixtureURL = try fixtureBundleURL()
     let data = try Data(contentsOf: fixtureURL)
     return try FeatureFlagJSON.decoder.decode([FixtureCase].self, from: data)
 }
 
+private func fixtureBundleURL() throws -> URL {
+    let testBundle = Bundle(for: FixtureBundleToken.self)
+    if let bundledURL = testBundle.url(forResource: "feature_flag_cases", withExtension: "json") {
+        return bundledURL
+    }
+
+    let testFileURL = URL(fileURLWithPath: #filePath)
+    return testFileURL
+        .deletingLastPathComponent()
+        .appendingPathComponent("../../../fixtures/feature_flag_cases.json")
+        .standardizedFileURL
+}
+
+private final class FixtureBundleToken: NSObject {}
