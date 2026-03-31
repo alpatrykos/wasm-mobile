@@ -1,0 +1,27 @@
+{
+  "buildFiles": [
+    "/Users/patryktargosinski/wasm-mobile/android-host/sdk/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/patryktargosinski/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/patryktargosinski/wasm-mobile/android-host/sdk/.cxx/Debug/47uyd2q4/arm64-v8a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/patryktargosinski/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/patryktargosinski/wasm-mobile/android-host/sdk/.cxx/Debug/47uyd2q4/arm64-v8a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "wasm_mobile::@6890427a1f51a3e7e1df": {
+      "artifactName": "wasm_mobile",
+      "abi": "arm64-v8a",
+      "output": "/Users/patryktargosinski/wasm-mobile/android-host/sdk/build/intermediates/cxx/Debug/47uyd2q4/obj/arm64-v8a/libwasm_mobile.so",
+      "runtimeFiles": []
+    }
+  }
+}

@@ -1,0 +1,3 @@
+/Users/patryktargosinski/wasm-mobile/android-host/sdk/.cxx/Debug/47uyd2q4/arm64-v8a/CMakeFiles/wasm_mobile.dir
+/Users/patryktargosinski/wasm-mobile/android-host/sdk/.cxx/Debug/47uyd2q4/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/patryktargosinski/wasm-mobile/android-host/sdk/.cxx/Debug/47uyd2q4/arm64-v8a/CMakeFiles/rebuild_cache.dir

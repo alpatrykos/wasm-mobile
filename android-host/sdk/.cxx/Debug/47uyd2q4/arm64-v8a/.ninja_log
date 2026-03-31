@@ -1,0 +1,14 @@
+# ninja log v5
+7	612	1774986238683528737	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_exec.c.o	2c23c2780e4e97ca
+8	744	1774986238837365244	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_info.c.o	c6b71ab55048b3d
+8	751	1774986238843416251	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_module.c.o	ad29ebc7357d4d82
+8	767	1774986238860728270	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_function.c.o	976dc3ead3b81adf
+5	768	1774986238861518771	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_code.c.o	8a6d079896206f63
+6	770	1774986238862822398	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_core.c.o	a6b900cd66776f55
+4	772	1774986238866171818	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_bind.c.o	158ec9110ada9a50
+4	774	1774986238869487405	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/shared-core/host-bridge/wasm_host_runtime.c.o	4b49fdd74e992c80
+9	790	1774986238884563214	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_parse.c.o	d6c584fe42460b7c
+6	793	1774986238886482133	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_env.c.o	a456bd6ba564ed29
+5	1106	1774986239195530521	CMakeFiles/wasm_mobile.dir/Users/patryktargosinski/wasm-mobile/third_party/wasm3/source/m3_compile.c.o	31fc85032ac68fe1
+1	1453	1774986239544748706	CMakeFiles/wasm_mobile.dir/feature_flag_jni.cpp.o	986e2f7d9873c23d
+1454	1755	1774986239835092909	/Users/patryktargosinski/wasm-mobile/android-host/sdk/build/intermediates/cxx/Debug/47uyd2q4/obj/arm64-v8a/libwasm_mobile.so	4a6bc5bb580073db

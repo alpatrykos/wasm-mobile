@@ -1,0 +1,13 @@
+/artifacts/*.wasm
+/artifacts/*.wat
+/artifacts/metrics/*.json
+/android-host/.gradle/
+/android-host/build/
+/android-host/local.properties
+/android-host/**/build/
+/android-host/.cxx/
+/ios-host/.build/
+/ios-host/DerivedData/
+/shared-core/target/
+/target/
+/.DS_Store

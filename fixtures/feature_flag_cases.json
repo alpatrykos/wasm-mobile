@@ -1,0 +1,141 @@
+[
+  {
+    "name": "matches_first_rule",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "country", "op": "eq", "value": "PL", "variant": "on" },
+        { "attribute": "app_version", "op": "gte", "value": 120, "variant": "canary" }
+      ],
+      "context": {
+        "country": "PL",
+        "app_version": 130
+      }
+    },
+    "expected_response": {
+      "ok": true,
+      "result": {
+        "flag_key": "new_home",
+        "variant": "on",
+        "reason": "rule_match",
+        "matched_rule_index": 0,
+        "source": "wasm"
+      }
+    }
+  },
+  {
+    "name": "matches_numeric_rule",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "country", "op": "eq", "value": "DE", "variant": "on" },
+        { "attribute": "app_version", "op": "gte", "value": 120, "variant": "canary" }
+      ],
+      "context": {
+        "country": "PL",
+        "app_version": 130
+      }
+    },
+    "expected_response": {
+      "ok": true,
+      "result": {
+        "flag_key": "new_home",
+        "variant": "canary",
+        "reason": "rule_match",
+        "matched_rule_index": 1,
+        "source": "wasm"
+      }
+    }
+  },
+  {
+    "name": "falls_back_to_default",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "country", "op": "eq", "value": "DE", "variant": "on" },
+        { "attribute": "is_staff", "op": "eq", "value": true, "variant": "internal" }
+      ],
+      "context": {
+        "country": "PL",
+        "is_staff": false
+      }
+    },
+    "expected_response": {
+      "ok": true,
+      "result": {
+        "flag_key": "new_home",
+        "variant": "off",
+        "reason": "default",
+        "matched_rule_index": null,
+        "source": "wasm"
+      }
+    }
+  },
+  {
+    "name": "supports_neq",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "country", "op": "neq", "value": "US", "variant": "row" }
+      ],
+      "context": {
+        "country": "PL"
+      }
+    },
+    "expected_response": {
+      "ok": true,
+      "result": {
+        "flag_key": "new_home",
+        "variant": "row",
+        "reason": "rule_match",
+        "matched_rule_index": 0,
+        "source": "wasm"
+      }
+    }
+  },
+  {
+    "name": "unsupported_operator",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "country", "op": "contains", "value": "PL", "variant": "on" }
+      ],
+      "context": {
+        "country": "PL"
+      }
+    },
+    "expected_response": {
+      "ok": false,
+      "error": {
+        "code": "UNSUPPORTED_OPERATOR",
+        "message": "unsupported operator: contains"
+      }
+    }
+  },
+  {
+    "name": "gte_requires_numbers",
+    "request": {
+      "flag_key": "new_home",
+      "default_variant": "off",
+      "rules": [
+        { "attribute": "app_version", "op": "gte", "value": 120, "variant": "canary" }
+      ],
+      "context": {
+        "app_version": "130"
+      }
+    },
+    "expected_response": {
+      "ok": false,
+      "error": {
+        "code": "INVALID_REQUEST",
+        "message": "gte operator requires numeric context and rule values"
+      }
+    }
+  }
+]
+
