@@ -42,6 +42,8 @@ cargo test --manifest-path shared-core/Cargo.toml
 ./scripts/test_ios.sh
 ./scripts/test_android.sh
 ./scripts/bench.sh
+./scripts/bench_android_device.sh
+IOS_DEVELOPMENT_TEAM=YOURTEAMID ./scripts/bench_ios_device.sh
 IOS_DEVELOPMENT_TEAM=YOURTEAMID ./scripts/bench_devices.sh
 ```
 
@@ -64,7 +66,39 @@ Inputs and outputs are UTF-8 JSON byte buffers. The return value from `evaluate_
 
 ## Device Benchmarking
 
-Physical-device benchmarking uses:
+Android-only physical-device benchmarking uses:
+
+- `ANDROID_SERIAL` or a single attached non-emulator Android device
+
+The command writes:
+
+- `artifacts/metrics/android-device.json`
+- `artifacts/metrics/device-summary.json`
+
+Run it with:
+
+```bash
+./scripts/bench_android_device.sh
+```
+
+iOS-only physical-device benchmarking uses:
+
+- `IOS_DEVICE_ID` or a single attached physical iPhone
+- required `IOS_DEVELOPMENT_TEAM`
+- optional `IOS_CODE_SIGN_IDENTITY`, `IOS_BUNDLE_ID_PREFIX`, and `IOS_CONFIGURATION`
+
+The command writes:
+
+- `artifacts/metrics/ios-device.json`
+- `artifacts/metrics/device-summary.json`
+
+Run it with:
+
+```bash
+IOS_DEVELOPMENT_TEAM=YOURTEAMID ./scripts/bench_ios_device.sh
+```
+
+Cross-platform physical-device benchmarking uses:
 
 - `ANDROID_SERIAL` or a single attached non-emulator Android device
 - `IOS_DEVICE_ID` or a single attached physical iPhone
@@ -82,5 +116,5 @@ The command writes:
 1. Replace the JSON buffer ABI with a slimmer binary encoding only if profiling shows the JSON boundary is material.
 2. Re-evaluate Wasm3 against WAMR if maintenance posture becomes a blocker.
 3. Add more rule operators only after validating the minimal host/runtime path.
-4. Run `./scripts/bench_devices.sh` on attached hardware and fold the first Android/iPhone measurements into `docs/REPORT.md`.
+4. Run `IOS_DEVELOPMENT_TEAM=... ./scripts/bench_ios_device.sh` for the first signed iPhone-only hardware pass, then `./scripts/bench_devices.sh` when both devices are attached.
 5. Decide whether to expand only to deterministic SDK logic or stop after the evaluation report.

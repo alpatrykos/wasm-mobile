@@ -44,7 +44,17 @@ Concrete baseline results:
 
 ## Physical-Device Measurements
 
-Physical-device measurements are written by `scripts/bench_devices.sh` to:
+Android-only physical-device measurements can be written by `scripts/bench_android_device.sh` to:
+
+- `artifacts/metrics/android-device.json`
+- `artifacts/metrics/device-summary.json`
+
+iOS-only physical-device measurements can be written by `scripts/bench_ios_device.sh` to:
+
+- `artifacts/metrics/ios-device.json`
+- `artifacts/metrics/device-summary.json`
+
+Cross-platform physical-device measurements are written by `scripts/bench_devices.sh` to:
 
 - `artifacts/metrics/android-device.json`
 - `artifacts/metrics/ios-device.json`
@@ -52,14 +62,15 @@ Physical-device measurements are written by `scripts/bench_devices.sh` to:
 
 Current status on this machine:
 
-- Android phone: not attached
+- Android phone: benchmark captured via `scripts/bench_android_device.sh`
 - iPhone: not attached
-- physical-device numbers: pending first signed hardware run
+- full Android+iPhone run: pending first signed hardware run
 
 ## Delta Summary
 
-- Until the first hardware run exists, only the emulator/simulator baseline can be compared.
-- `device-summary.json` will record cold-start, steady-state, and engine-init deltas against the baseline files when both sets are present.
+- The Android-only command already records Android cold-start, steady-state, and engine-init deltas against `artifacts/metrics/android.json` in `device-summary.json`.
+- The iOS-only command records iOS deltas against `artifacts/metrics/ios.json` in the same file once a signed device run exists.
+- The iOS fields in `device-summary.json` stay `null` until either `scripts/bench_ios_device.sh` or `scripts/bench_devices.sh` completes with a signed iPhone run.
 - The hosted iOS project path changes the simulator-side binary being measured, so the next baseline run should refresh the iOS numbers before any hardware comparison is interpreted.
 
 Raw machine-readable outputs live in:
