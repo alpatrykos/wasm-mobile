@@ -82,5 +82,5 @@ The command writes:
 1. Replace the JSON buffer ABI with a slimmer binary encoding only if profiling shows the JSON boundary is material.
 2. Re-evaluate Wasm3 against WAMR if maintenance posture becomes a blocker.
 3. Add more rule operators only after validating the minimal host/runtime path.
-4. Measure on physical devices if this moves beyond PoC status.
+4. Run `./scripts/bench_devices.sh` on attached hardware and fold the first Android/iPhone measurements into `docs/REPORT.md`.
 5. Decide whether to expand only to deterministic SDK logic or stop after the evaluation report.
